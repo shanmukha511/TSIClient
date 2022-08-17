@@ -22,7 +22,7 @@ steps:
     displayName: "Make Pipenv"
 
   - script: |
-		pipenv run python ./setup.py bdist_wheel
+       pipenv run python ./setup.py bdist_wheel
     displayName: "Build wheel"
 
   - task: PublishPipelineArtifact@0
