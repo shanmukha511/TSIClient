@@ -1,0 +1,31 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: "3.7"
+      architecture: "x64"
+
+  - script: |
+      python3 -m pip install -U pip
+      python3 -m pip install -U dparse     
+    displayName: "PIP Setup"
+
+  - script: |
+      python3 -m pip install -U pipenv
+      mkdir .venv
+      pipenv install --dev --verbose
+    displayName: "Make Pipenv"
+
+  - script: |
+		pipenv run python ./setup.py bdist_wheel
+    displayName: "Build wheel"
+
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: "artifact"
+      targetPath: "dist"
